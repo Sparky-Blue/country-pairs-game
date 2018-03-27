@@ -24,7 +24,9 @@ class App extends Component {
 class GameBoard extends Component {
   state = {
     cards: [],
-    start: false
+    shuffCards: [],
+    start: false,
+    set: false
   };
   render() {
     return (
@@ -43,6 +45,7 @@ class GameBoard extends Component {
 
   chooseCards = () => {
     const randomCountries = [];
+
     for (let n = 0; n < 8; n++) {
       randomCountries.push(
         this.props.countries[
@@ -50,7 +53,30 @@ class GameBoard extends Component {
         ]
       );
     }
-    this.setState({ cards: [...randomCountries], start: true });
+    if (this.state.set === false) {
+      let counter = randomCountries.length;
+      let shuffledCards = [...randomCountries];
+      while (counter > 0) {
+        let index = Math.floor(Math.random() * counter);
+        counter--;
+        let temp = shuffledCards[counter];
+        shuffledCards[counter] = shuffledCards[index];
+        shuffledCards[index] = temp;
+      }
+      this.setState({
+        cards: [...randomCountries],
+        start: true,
+        shuffCards: [...shuffledCards],
+        set: true
+      });
+    } else {
+      this.setState({
+        cards: [...randomCountries],
+        start: true,
+        shuffCards: this.state.shuffCards,
+        set: true
+      });
+    }
   };
 }
 
@@ -68,7 +94,8 @@ function Start() {
 
 class Cards extends Component {
   state = {
-    tracker: { country: "", capital: "", pair: false }
+    tracker: { country: "", capital: "", pair: false },
+    set: false
   };
   render() {
     return (
@@ -80,11 +107,13 @@ class Cards extends Component {
         <CardCaps
           cards={this.props.cardSelection.cards}
           capital={this.selectCapital}
+          shuffled={this.props.cardSelection.shuffCards}
         />
       </div>
     );
   }
   selectCountry = event => {
+    event.target.style = "background: blue";
     if (this.state.tracker.pair === true) {
       const country = this.props.cardSelection.cards.filter(card => {
         return event.target.innerText === card.CountryName;
@@ -92,6 +121,7 @@ class Cards extends Component {
       if (country[0].CapitalName === this.state.tracker.capital) {
         console.log("correct");
       } else {
+        event.target.style = "";
         console.log("wrong!");
       }
       this.setState({
@@ -102,6 +132,7 @@ class Cards extends Component {
         }
       });
     } else {
+      event.target.style = "";
       this.setState({
         tracker: {
           country: event.target.innerText,
@@ -113,6 +144,7 @@ class Cards extends Component {
   };
 
   selectCapital = event => {
+    event.target.style = "background: green";
     if (this.state.tracker.pair === true) {
       let country;
       this.props.cardSelection.cards.forEach(card => {
@@ -121,6 +153,7 @@ class Cards extends Component {
       if (country.CountryName === this.state.tracker.country) {
         console.log("correct");
       } else {
+        event.target.style = "";
         console.log("wrong!");
       }
       this.setState({
@@ -143,16 +176,7 @@ class Cards extends Component {
 }
 
 function CardCaps({ cards, capital }) {
-  let counter = cards.length;
-  let shuffledCards = [...cards];
-  while (counter > 0) {
-    let index = Math.floor(Math.random() * counter);
-    counter--;
-    let temp = shuffledCards[counter];
-    shuffledCards[counter] = shuffledCards[index];
-    shuffledCards[index] = temp;
-  }
-  return shuffledCards.map((card, i) => {
+  return cards.map((card, i) => {
     return (
       <button className="cardCap" onClick={capital} id={`card${i}`} key={i}>
         {card.CapitalName}
@@ -162,7 +186,6 @@ function CardCaps({ cards, capital }) {
 }
 
 function CardName({ cards, country }) {
-  console.log(cards, country);
   return cards.map((card, i) => {
     return (
       <button
