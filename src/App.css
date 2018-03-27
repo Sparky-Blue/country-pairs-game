@@ -1,28 +1,95 @@
 .App {
+}
+.wrapper {
+  display: grid;
+  grid-gap: 2vmin;
+  justify-items: center;
   text-align: center;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+button {
+  margin: 2vmin;
+}
+.gamePlay {
+}
+.board {
+}
+.choice {
+}
+.cards {
+  display: grid;
+  grid-gap: 1vw;
+  grid-template-areas:
+    "na ca nb cb"
+    "cc nh cd nc"
+    "nf ng ce cf"
+    "nd cg ch ne";
+  justify-items: center;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.cardCap,
+.cardName,
+.blank {
+  border: solid;
+  border-radius: 5px;
+  border-color: green;
+  height: 10vh;
+  width: 20vw;
+  text-align: center;
+}
+.cardText {
+}
+.scoreboard {
+}
+.currentScore {
+}
+.topScores {
+}
+#card0 {
+  grid-area: ca;
+}
+#card1 {
+  grid-area: cb;
+}
+#card2 {
+  grid-area: cc;
+}
+#card3 {
+  grid-area: cd;
+}
+#card4 {
+  grid-area: ce;
+}
+#card5 {
+  grid-area: cf;
+}
+#card6 {
+  grid-area: cg;
+}
+#card7 {
+  grid-area: ch;
 }
 
-.App-title {
-  font-size: 1.5em;
+#cardName0 {
+  grid-area: na;
 }
-
-.App-intro {
-  font-size: large;
+#cardName1 {
+  grid-area: nb;
 }
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+#cardName2 {
+  grid-area: nc;
+}
+#cardName3 {
+  grid-area: nd;
+}
+#cardName4 {
+  grid-area: ne;
+}
+#cardName5 {
+  grid-area: nf;
+}
+#cardName6 {
+  grid-area: ng;
+}
+#cardName7 {
+  grid-area: nh;
 }
