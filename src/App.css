@@ -5,9 +5,11 @@
   grid-gap: 2vmin;
   justify-items: center;
   text-align: center;
+  font-size: 3vmin;
 }
 button {
   margin: 2vmin;
+  font-size: 1.5vmin;
 }
 .gamePlay {
 }
@@ -31,10 +33,11 @@ button {
 .blank {
   border: solid;
   border-radius: 5px;
-  border-color: green;
   height: 10vh;
   width: 20vw;
   text-align: center;
+  font-size: 2vmin;
+  background: lightgreen;
 }
 .cardText {
 }
@@ -94,6 +97,14 @@ button {
   grid-area: nh;
 }
 
-.picked {
-  background: coral;
+.correct {
+  background: green;
+}
+
+.selected {
+  background: blue;
+}
+
+.wrong {
+  background: red;
 }
