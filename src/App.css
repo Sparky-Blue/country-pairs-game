@@ -96,13 +96,12 @@ button {
 #cardName7 {
   grid-area: nh;
 }
+.selected {
+  background: blue;
+}
 
 .correct {
   background: green;
-}
-
-.selected {
-  background: blue;
 }
 
 .wrong {

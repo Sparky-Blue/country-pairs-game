@@ -20,8 +20,10 @@ export default class GameBoard extends Component {
           <button onClick={this.chooseCards}>Get cards</button>
           <button onClick={this.resetCards}>Reset Game</button>
         </div>
-        {this.cardCaps()}
-        {this.cardName()}
+        <div className="cards">
+          {this.cardCaps()}
+          {this.cardName()}
+        </div>
       </div>
     );
   }
@@ -101,67 +103,3 @@ export default class GameBoard extends Component {
     });
   };
 }
-
-//   selectCountry = event => {
-//     event.target.style = "background: blue";
-//     if (this.state.tracker.pair === true) {
-//       const country = this.props.cardSelection.cards.filter(card => {
-//         return event.target.innerText === card.CountryName;
-//       });
-//       if (country[0].CapitalName === this.state.tracker.capital) {
-//         console.log("correct");
-//         event.target.style = "background: orange";
-//       } else {
-//         event.target.style = "";
-//         console.log("wrong!");
-//       }
-//       this.setState({
-//         tracker: {
-//           country: "",
-//           capital: "",
-//           pair: false
-//         }
-//       });
-//     } else {
-//       event.target.style = "";
-//       this.setState({
-//         tracker: {
-//           country: event.target.innerText,
-//           capital: "",
-//           pair: true
-//         }
-//       });
-//     }
-//   };
-
-//   selectCapital = event => {
-//     event.target.style = "background: green";
-//     if (this.state.tracker.pair === true) {
-//       let country;
-//       this.props.cardSelection.cards.forEach(card => {
-//         if (event.target.innerText === card.CapitalName) country = card;
-//       });
-//       if (country.CountryName === this.state.tracker.country) {
-//         event.target.style = "background: orange";
-//         console.log("correct");
-//       } else {
-//         event.target.style = "";
-//         console.log("wrong!");
-//       }
-//       this.setState({
-//         tracker: {
-//           country: "",
-//           capital: "",
-//           pair: false
-//         }
-//       });
-//     } else {
-//       this.setState({
-//         tracker: {
-//           capital: event.target.innerText,
-//           country: "",
-//           pair: true
-//         }
-//       });
-//     }
-//   };
