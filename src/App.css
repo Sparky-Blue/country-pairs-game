@@ -1,4 +1,8 @@
 .App {
+  height: 100%;
+  width: 100%;
+  background: url("map-of-the-world-2401458_1280.jpg");
+  color: navy;
 }
 .wrapper {
   display: grid;
@@ -10,7 +14,12 @@
 button {
   margin: 2vmin;
   font-size: 1.5vmin;
+  background: teal;
+  color: cornsilk;
+  font-size: 2vh;
+  margin: 1vh;
 }
+
 .gamePlay {
 }
 .board {
@@ -19,7 +28,7 @@ button {
 }
 .cards {
   display: grid;
-  grid-gap: 1vw;
+  grid-gap: 0.5vw;
   grid-template-areas:
     "na ca nb cb"
     "cc nh cd nc"
@@ -29,24 +38,40 @@ button {
 }
 
 .cardCap,
-.cardName,
-.blank {
+.cardName {
   border: solid;
   border-radius: 5px;
   height: 10vh;
   width: 20vw;
   text-align: center;
   font-size: 2vmin;
-  background: lightgreen;
-}
-.cardText {
+  color: black;
+  background: blanchedalmond;
 }
 .scoreboard {
+  display: grid;
+  grid-gap: 10px;
+  text-align: center;
+  justify-self: center;
+  margin: 2vmin;
+  font-size: 2vmin;
+  grid-template-areas: "sa sb sc";
+  grid-auto-columns: 1fr, 1fr, 1fr;
+  width: 100%;
 }
+
 .currentScore {
+  grid-area: sb;
 }
-.topScores {
+
+.thisGame {
+  grid-area: sc;
 }
+
+.level {
+  grid-area: sa;
+}
+
 #card0 {
   grid-area: ca;
 }
@@ -97,13 +122,13 @@ button {
   grid-area: nh;
 }
 .selected {
-  background: blue;
+  background: lightblue;
 }
 
 .correct {
-  background: green;
+  background: lightgreen;
 }
 
 .wrong {
-  background: red;
+  background: salmon;
 }

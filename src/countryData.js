@@ -18,8 +18,7 @@ const countryData =
     {
       CountryName: "Afghanistan",
       CapitalName: "Kabul",
-      CountryCode:
-        "http://www.senojflags.com/images/country-flag-icons/Afghanistan-Flag.png",
+      CountryCode: "AF",
       ContinentName: "Asia"
     },
     {
@@ -589,7 +588,7 @@ const countryData =
     {
       CountryName: "Japan",
       CapitalName: "Tokyo",
-      CountryCode: "JP",
+      CountryCode: " en-JP",
       ContinentName: "Asia"
     },
     {
@@ -943,7 +942,7 @@ const countryData =
     {
       CountryName: "Russia",
       CapitalName: "Moscow",
-      CountryCode: "RU",
+      CountryCode: " en-RU",
       ContinentName: "Europe"
     },
     {
