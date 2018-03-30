@@ -4,7 +4,16 @@ import GameBoard from "./GameBoard";
 
 class App extends Component {
   state = {
-    tracker: { pick: "", pair: "", cardCount: 0, card: {} },
+    tracker: {
+      pick: "",
+      pair: "",
+      cardCount: 0,
+      country: "",
+      match: false,
+      chosenCards: [],
+      right: [],
+      wrong: []
+    },
     score: { points: 0, pairsFound: 0, mistakes: 0 }
   };
 
@@ -14,7 +23,10 @@ class App extends Component {
         <div className="wrapper">
           <header>Country Matching game</header>
           <div className="gamePlay">
-            <GameBoard selectCard={this.selectCard} />
+            <GameBoard
+              selectCard={this.selectCard}
+              tracker={this.state.tracker}
+            />
           </div>
           <Scores scores={this.state.score} />
         </div>
@@ -23,8 +35,6 @@ class App extends Component {
   }
 
   selectCard = event => {
-    console.log(this.state.tracker.card.className);
-    console.log(this.state);
     const { points, mistakes, pairsFound } = this.state.score;
     if (this.state.count === 8) {
       //next Level?
@@ -33,16 +43,13 @@ class App extends Component {
       event.target.disabled = true;
       if (this.state.tracker.pair !== "") {
         if (this.state.tracker.pair === event.target.innerText) {
-          console.log(this.state.tracker.card.className);
           this.setState({
             tracker: {
               pick: "",
               pair: "",
               cardCount: 0,
-              card: {
-                classList: `${this.state.tracker.card.className} correct`,
-                ...this.state.tracker.card
-              }
+              country: this.state.tracker.country,
+              match: true
             },
             score: {
               points: points + 1,
@@ -53,11 +60,17 @@ class App extends Component {
         } else {
           this.setState({
             score: {
-              points: this.state.score.points,
-              pairsFound: this.state.score.pairsFound,
+              points: points,
+              pairsFound: pairsFound,
               mistakes: mistakes + 1
             },
-            tracker: { pick: "", pair: "", cardCount: 0, card: {} }
+            tracker: {
+              pick: "",
+              pair: "",
+              cardCount: 0,
+              country: "",
+              match: true
+            }
           });
         }
       } else {
@@ -66,8 +79,9 @@ class App extends Component {
           tracker: {
             pick: event.target.innerText,
             pair,
-            card: event.target,
-            cardCount: +this.state.cardCount + 1
+            country: event.target.value,
+            cardCount: +this.state.cardCount + 1,
+            match: false
           }
         });
       }

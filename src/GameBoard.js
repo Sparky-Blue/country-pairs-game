@@ -87,10 +87,16 @@ export default class GameBoard extends Component {
   };
 
   cardName = () => {
+    console.log(this.props.tracker.country);
     return this.state.cards.map((card, i) => {
+      console.log(card.CapitalName);
       return (
         <button
-          className="cardName"
+          className={
+            card.CapitalName === this.props.tracker.pair
+              ? "cardName correct"
+              : "cardName"
+          }
           onClick={this.props.selectCard}
           id={`cardName${i}`}
           key={i}
