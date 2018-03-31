@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 import "./App.css";
 import GameBoard from "./GameBoard";
+import { countryData } from "./countryData";
 
 class App extends Component {
   state = {
+    cards: {
+      usedCards: [],
+      countryData,
+      cards: [],
+      shuffCards: []
+    },
     tracker: {
       pair: false,
       cardCount: 0,
@@ -15,6 +22,10 @@ class App extends Component {
     newLevel: null,
     newGame: false
   };
+
+  componentDidMount() {
+    this.chooseNewCards();
+  }
 
   render() {
     return (
@@ -33,13 +44,22 @@ class App extends Component {
             >
               Next Level
             </button>
-            <GameBoard
+            <div className="board">
+              <button className="topButtons" onClick={this.chooseCards}>
+                New cards
+              </button>
+              <div className="cards">
+                {this.cardCaps()}
+                {this.cardName()}
+              </div>
+            </div>
+            {/* <GameBoard
               selectCard={this.selectCard}
               tracker={this.state.tracker}
               reset={this.resetGame}
               newLevel={this.state.newLevel}
               newGame={this.state.newGame}
-            />
+            /> */}
           </div>
           <Scores scores={this.state.score} />
           <i className="em em-earth_africa" />
@@ -47,6 +67,96 @@ class App extends Component {
       </div>
     );
   }
+
+  chooseNewCards = () => {
+    const { countryData, usedCards } = this.state.cards;
+    const randomCountries = [];
+    for (let n = 0; n < 8; n++) {
+      const card = countryData[Math.floor(Math.random() * countryData.length)];
+      if (usedCards.includes(card) || randomCountries.includes(card)) --n;
+      else randomCountries.push(card);
+    }
+    let counter = randomCountries.length;
+    let shuffledCards = [...randomCountries];
+    while (counter > 0) {
+      let index = Math.floor(Math.random() * counter);
+      counter--;
+      let temp = shuffledCards[counter];
+      shuffledCards[counter] = shuffledCards[index];
+      shuffledCards[index] = temp;
+    }
+    this.setState({
+      cards: {
+        usedCards: [...usedCards],
+        cards: [...randomCountries],
+        newGame: true,
+        shuffCards: [...shuffledCards],
+        countryData
+      }
+    });
+  };
+
+  cardCaps = () => {
+    return this.state.cards.cards.map((card, i) => {
+      let classAnswer = "";
+      let disabled = null;
+      if (this.state.tracker.right.includes(card.CountryCode)) {
+        classAnswer = "correct";
+        disabled = true;
+      }
+      if (this.state.tracker.wrong.includes(card.CountryCode)) {
+        classAnswer = "wrong";
+        disabled = true;
+      }
+      return (
+        <button
+          className={`cardCap ${classAnswer}`}
+          onClick={this.selectCard}
+          id={`card${i}`}
+          key={i}
+          value={card.CountryCode}
+          disabled={disabled}
+        >
+          {card.CapitalName}
+          <br />
+          {classAnswer !== "" && (
+            <i className={`em-svg em-flag-${card.CountryCode.toLowerCase()}`} />
+          )}
+        </button>
+      );
+    });
+  };
+
+  cardName = () => {
+    return this.state.cards.cards.map((card, i) => {
+      let classAnswer = "";
+      let disabled = null;
+      if (this.state.tracker.right.includes(card.CountryCode)) {
+        classAnswer = "correct";
+        disabled = true;
+      }
+      if (this.state.tracker.wrong.includes(card.CountryCode)) {
+        classAnswer = "wrong";
+        disabled = true;
+      }
+      return (
+        <button
+          className={`cardName ${classAnswer}`}
+          onClick={this.selectCard}
+          id={`cardName${i}`}
+          key={i}
+          value={card.CountryCode}
+          disabled={disabled}
+        >
+          {card.CountryName}
+          <br />
+          {classAnswer !== "" && (
+            <i className={`em-svg em-flag-${card.CountryCode.toLowerCase()}`} />
+          )}
+        </button>
+      );
+    });
+  };
 
   selectCard = event => {
     const { points, mistakes, pairsFound, level } = this.state.score;
@@ -115,8 +225,16 @@ class App extends Component {
   };
 
   nextLevel = () => {
+    const { usedCards, cards, countryData } = this.state.cards;
     const { points, level } = this.state.score;
     this.setState({
+      cards: {
+        usedCards: [...usedCards, ...cards],
+        countryData,
+        cards: [],
+        shuffCards: [],
+        newGame: false
+      },
       score: {
         points,
         mistakes: 0,
@@ -133,11 +251,25 @@ class App extends Component {
       newLevel: true,
       newGame: null
     });
+
+    this.chooseNewCards();
   };
 
   resetGame = () => {
     this.setState({
-      tracker: { pair: false, cardCount: 0, country: "", right: [], wrong: [] },
+      cards: {
+        usedCards: [],
+        countryData,
+        cards: [],
+        shuffCards: []
+      },
+      tracker: {
+        pair: false,
+        cardCount: 0,
+        country: "",
+        right: [],
+        wrong: []
+      },
       score: { points: 0, pairsFound: 0, mistakes: 0, level: 1 },
       newGame: null,
       newLevel: null
