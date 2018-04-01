@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import GameBoard from "./GameBoard";
 import { countryData } from "./countryData";
 
 class App extends Component {
@@ -18,9 +17,7 @@ class App extends Component {
       right: [],
       wrong: []
     },
-    score: { points: 0, pairsFound: 0, mistakes: 0, level: 1 },
-    newLevel: null,
-    newGame: false
+    score: { points: 0, pairsFound: 0, mistakes: 0, level: 1 }
   };
 
   componentDidMount() {
@@ -31,35 +28,24 @@ class App extends Component {
     return (
       <div className="App">
         <div className="wrapper">
-          <header>Country Matching game</header>
+          <header>
+            <h1>Match the country with the capital...</h1>
+          </header>
           <i className="em em-world_map" />
           <div className="gamePlay">
-            <button className="topButtons" onClick={this.resetGame}>
+            <button className="topButtons reset" onClick={this.resetGame}>
               Reset Game
             </button>
             <button
-              className="topButtons"
+              className="topButtons level"
               onClick={this.nextLevel}
-              hidden={this.state.newLevel === null ? true : false}
+              hidden={this.state.tracker.cardCount === 16 ? false : true}
             >
               Next Level
             </button>
             <div className="board">
-              <button className="topButtons" onClick={this.chooseCards}>
-                New cards
-              </button>
-              <div className="cards">
-                {this.cardCaps()}
-                {this.cardName()}
-              </div>
+              <div className="cards">{this.setCards()}</div>
             </div>
-            {/* <GameBoard
-              selectCard={this.selectCard}
-              tracker={this.state.tracker}
-              reset={this.resetGame}
-              newLevel={this.state.newLevel}
-              newGame={this.state.newGame}
-            /> */}
           </div>
           <Scores scores={this.state.score} />
           <i className="em em-earth_africa" />
@@ -88,46 +74,13 @@ class App extends Component {
     this.setState({
       cards: {
         usedCards: [...usedCards],
-        cards: [...randomCountries],
-        newGame: true,
-        shuffCards: [...shuffledCards],
+        cards: [...randomCountries, ...shuffledCards],
         countryData
       }
     });
   };
 
-  cardCaps = () => {
-    return this.state.cards.cards.map((card, i) => {
-      let classAnswer = "";
-      let disabled = null;
-      if (this.state.tracker.right.includes(card.CountryCode)) {
-        classAnswer = "correct";
-        disabled = true;
-      }
-      if (this.state.tracker.wrong.includes(card.CountryCode)) {
-        classAnswer = "wrong";
-        disabled = true;
-      }
-      return (
-        <button
-          className={`cardCap ${classAnswer}`}
-          onClick={this.selectCard}
-          id={`card${i}`}
-          key={i}
-          value={card.CountryCode}
-          disabled={disabled}
-        >
-          {card.CapitalName}
-          <br />
-          {classAnswer !== "" && (
-            <i className={`em-svg em-flag-${card.CountryCode.toLowerCase()}`} />
-          )}
-        </button>
-      );
-    });
-  };
-
-  cardName = () => {
+  setCards = () => {
     return this.state.cards.cards.map((card, i) => {
       let classAnswer = "";
       let disabled = null;
@@ -143,12 +96,12 @@ class App extends Component {
         <button
           className={`cardName ${classAnswer}`}
           onClick={this.selectCard}
-          id={`cardName${i}`}
+          id={`card${i}`}
           key={i}
           value={card.CountryCode}
           disabled={disabled}
         >
-          {card.CountryName}
+          {i > 7 ? card.CapitalName : card.CountryName}
           <br />
           {classAnswer !== "" && (
             <i className={`em-svg em-flag-${card.CountryCode.toLowerCase()}`} />
@@ -159,11 +112,7 @@ class App extends Component {
   };
 
   selectCard = event => {
-    const { points, mistakes, pairsFound, level } = this.state.score;
-    const { pair, cardCount, country, right, wrong } = this.state.tracker;
-
-    console.log({ points, level });
-    console.log(cardCount);
+    const { pair, cardCount, right, wrong } = this.state.tracker;
     event.target.className = `${event.target.className} selected`;
     event.target.disabled = true;
     if (pair === true) {
@@ -176,16 +125,14 @@ class App extends Component {
           cardCount,
           right,
           wrong
-        },
-        newLevel: null,
-        newGame: null
+        }
       });
     }
   };
 
   checkAnswer = event => {
     const { points, mistakes, pairsFound, level } = this.state.score;
-    const { pair, cardCount, country, right, wrong } = this.state.tracker;
+    const { cardCount, country, right, wrong } = this.state.tracker;
     if (country === event.target.value) {
       this.setState({
         tracker: {
@@ -219,9 +166,6 @@ class App extends Component {
         }
       });
     }
-    if (this.state.tracker.cardCount >= 12) {
-      this.setState({ newLevel: true });
-    }
   };
 
   nextLevel = () => {
@@ -232,8 +176,7 @@ class App extends Component {
         usedCards: [...usedCards, ...cards],
         countryData,
         cards: [],
-        shuffCards: [],
-        newGame: false
+        shuffCards: []
       },
       score: {
         points,
@@ -247,9 +190,7 @@ class App extends Component {
         country: "",
         right: [],
         wrong: []
-      },
-      newLevel: true,
-      newGame: null
+      }
     });
 
     this.chooseNewCards();
@@ -270,28 +211,47 @@ class App extends Component {
         right: [],
         wrong: []
       },
-      score: { points: 0, pairsFound: 0, mistakes: 0, level: 1 },
-      newGame: null,
-      newLevel: null
+      score: { points: 0, pairsFound: 0, mistakes: 0, level: 1 }
     });
+    this.chooseNewCards();
   };
 }
 
 class Scores extends Component {
+  state = {
+    username: ""
+  };
   render() {
     const { points, pairsFound, mistakes, level } = this.props.scores;
     return (
       <div className="scoreboard">
-        <div className="level">Level: {level}</div>
-        <div className="currentScore">Total score: {points}</div>
+        <div className="level">
+          <h3>Level: {level}</h3>
+        </div>
+        <div className="currentScore">
+          <h3>Total score: {points}</h3>
+        </div>
         <div className="thisGame">
-          This level: <br />
-          <div className="pairs">Pairs found: {pairsFound}</div>
-          <div className="mismatched">Mismatched pairs: {mistakes}</div>
+          <h3>This level</h3>
+          <div className="pairs">
+            <p>Pairs found: {pairsFound}</p>
+          </div>
+          <div className="mismatched">
+            <p>Mismatched pairs: {mistakes}</p>
+          </div>
+        </div>
+        <div className="saveScore">
+          <input type="text" onKeyUp={this.saveUserName} />
         </div>
       </div>
     );
   }
+
+  saveUserName = event => {
+    this.setState({
+      username: event.target.value
+    });
+  };
 }
 
 export default App;
