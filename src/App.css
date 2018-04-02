@@ -1,10 +1,10 @@
 .App {
-  /* background: url("map-of-the-world-2401458_1280.png") no-repeat center center
+  background: url("map-of-the-world-2401458_1280.png") no-repeat center center
     fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-size: cover; */
+  background-size: cover;
   color: navy;
 }
 .wrapper {
@@ -13,7 +13,7 @@
 button {
   margin: 2vmin;
   font-size: 1.5vmin;
-  background: teal;
+  background: #017595;
   color: cornsilk;
   font-size: 2vh;
   margin: 1vh;
@@ -58,6 +58,8 @@ button {
   grid-template-areas: "sa sb sc";
   grid-auto-columns: 1fr, 1fr, 1fr;
   width: 100%;
+  background: whitesmoke;
+  opacity: 0.5;
 }
 .currentScore {
   grid-area: sb;
@@ -124,4 +126,8 @@ button {
 }
 .wrong {
   background: salmon;
+}
+
+footer {
+  height: 200px;
 }

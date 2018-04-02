@@ -39,7 +39,7 @@ class App extends Component {
             <button
               className="topButtons level"
               onClick={this.nextLevel}
-              hidden={this.state.tracker.cardCount === 16 ? false : true}
+              hidden={this.state.tracker.cardCount >= 16 ? false : true}
             >
               Next Level
             </button>
@@ -50,6 +50,7 @@ class App extends Component {
           <Scores scores={this.state.score} />
           <i className="em em-earth_africa" />
         </div>
+        <footer />
       </div>
     );
   }
@@ -150,6 +151,8 @@ class App extends Component {
         }
       });
     } else {
+      event.target.className = `cardName`;
+      event.target.disabled = false;
       this.setState({
         score: {
           points: points,
@@ -158,9 +161,9 @@ class App extends Component {
           level
         },
         tracker: {
-          wrong: [...wrong, event.target.value, country],
+          wrong: [...wrong, country],
           pair: false,
-          cardCount: +cardCount + 4,
+          cardCount: +cardCount + 2,
           country: "",
           right
         }
@@ -240,18 +243,9 @@ class Scores extends Component {
             <p>Mismatched pairs: {mistakes}</p>
           </div>
         </div>
-        <div className="saveScore">
-          <input type="text" onKeyUp={this.saveUserName} />
-        </div>
       </div>
     );
   }
-
-  saveUserName = event => {
-    this.setState({
-      username: event.target.value
-    });
-  };
 }
 
 export default App;
